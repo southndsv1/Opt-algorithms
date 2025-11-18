@@ -97,20 +97,20 @@ class BenchmarkRunner:
                         constraint_violation += abs(c_val)
                         is_feasible = False
 
-        # Store results
+        # Store results (ensure all values are JSON serializable)
         result_dict = {
             'algorithm': algorithm.name,
             'problem': problem.name,
-            'success': result.success,
-            'feasible': is_feasible,
+            'success': bool(result.success),
+            'feasible': bool(is_feasible),
             'objective_value': float(result.fun),
             'constraint_violation': float(constraint_violation),
-            'iterations': result.nit,
-            'function_evaluations': result.nfev,
-            'time_seconds': elapsed_time,
+            'iterations': int(result.nit),
+            'function_evaluations': int(result.nfev),
+            'time_seconds': float(elapsed_time),
             'convergence_history': [float(h) for h in result.history] if result.history else [],
             'final_solution': result.x.tolist(),
-            'message': result.message
+            'message': str(result.message)
         }
 
         return result_dict
